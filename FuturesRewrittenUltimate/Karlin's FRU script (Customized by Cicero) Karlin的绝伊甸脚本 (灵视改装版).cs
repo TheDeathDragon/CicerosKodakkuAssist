@@ -271,6 +271,9 @@ namespace CicerosKodakkuAssist.FuturesRewrittenUltimate
         public bool Enable_Text_Prompts { get; set; } = true;
         [UserSetting("提示的语言")]
         public Languages_Of_Prompts Language_Of_Prompts { get; set; }
+        // Shiro add
+        [UserSetting("在小队聊天频道中文字提醒部分机制，以及额外的TTS")]
+        public bool Enable_Party_Text_Hint { get; set; } = false;
 
         [UserSetting("-----TTS设置----- (No actual meaning for this setting/此设置无实际意义)")]
         public bool _____TTS_Settings_____ { get; set; } = true;
@@ -4101,6 +4104,16 @@ namespace CicerosKodakkuAssist.FuturesRewrittenUltimate
                 dp.Owner = sid;
                 dp.Color = accessory.Data.DefaultDangerColor;
                 dp.DestoryAt = 6000;
+                
+                // Shiro add
+                if (Enable_Party_Text_Hint)
+                {
+                    accessory.Method.SendChat("""
+                                              /p 钻石星尘 钢铁
+                                              """);
+                    accessory.TTS("钢铁远离", Enable_Vanilla_TTS, Enable_Party_Text_Hint);
+                }
+                
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
             }
             else
@@ -4113,6 +4126,15 @@ namespace CicerosKodakkuAssist.FuturesRewrittenUltimate
                 dp.Owner = sid;
                 dp.Color = accessory.Data.DefaultDangerColor;
                 dp.DestoryAt = 6000;
+                
+                // Shiro add
+                if (Enable_Party_Text_Hint)
+                {
+                    accessory.Method.SendChat("""
+                                              /p 钻石星尘 月环
+                                              """);
+                    accessory.TTS("月环靠近", Enable_Vanilla_TTS, Enable_Party_Text_Hint);
+                }
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Donut, dp);
             }
         }
@@ -4682,6 +4704,15 @@ namespace CicerosKodakkuAssist.FuturesRewrittenUltimate
 
                         prompt = "逆时针135度";
 
+                        // Shiro add
+                        if (Enable_Party_Text_Hint)
+                        {
+                            accessory.Method.SendChat("""
+                                                      /p 逆时针135度
+                                                      """);
+                            accessory.TTS("逆时针135度", Enable_Vanilla_TTS, Enable_Party_Text_Hint);
+                        }
+
                     }
 
                     if (Language_Of_Prompts == Languages_Of_Prompts.English_英文)
@@ -4716,6 +4747,34 @@ namespace CicerosKodakkuAssist.FuturesRewrittenUltimate
                     {
 
                         prompt = $"顺时针{rotationOfThePath}度";
+
+                        // Shiro add
+                        if (Enable_Party_Text_Hint)
+                        {
+                            if (rotationOfThePath == 90)
+                            {
+                                accessory.Method.SendChat($"""
+                                                           /p 顺时针90度，慢跑
+                                                           """);
+                                accessory.TTS("顺时针90度，慢跑", Enable_Vanilla_TTS, Enable_Party_Text_Hint);
+                            }
+                            else if (rotationOfThePath == 180)
+                            {
+                                accessory.Method.SendChat($"""
+                                                           /p 顺时针180度，快跑
+                                                           """);
+                                accessory.TTS("顺时针180度，快跑", Enable_Vanilla_TTS, Enable_Party_Text_Hint);
+                            }
+                            else
+                            {
+                                accessory.Method.SendChat($"""
+                                                           /p 顺时针{rotationOfThePath}度
+                                                           """);
+                                accessory.TTS($"顺时针{rotationOfThePath}度", Enable_Vanilla_TTS,
+                                    Enable_Party_Text_Hint);
+                            }
+
+                        }
 
                     }
 
